@@ -8,6 +8,7 @@ const PageContainer = styled.div`
   background-color: #e0f2f1;
   min-height: 100vh;
   padding: 2rem 1rem;
+  color: #4b5563;
 `;
 
 const ContentWrapper = styled.div`
@@ -96,29 +97,32 @@ const InfoValue = styled.span`
 
 const TableContainer = styled.div`
   margin-top: 3rem;
+  border-radius: 36px;
+  border: 1px solid #65676b;
+  padding: 40px 40px 100px;
+  box-shadow: 8px 8px #2a9d8f;
+  margin-bottom: 80px;
   position: relative;
-  border-radius: 0.75rem;
-  padding: 30px;
-  border-radius: 30px;
-  border: 1px solid #d1d5db;
-  z-index: 1;
-  box-shadow: 4px 0 0 -1px rgba(43, 170, 144, 1);
 `;
 
 const YellowMarker = styled.div`
   position: absolute;
-  left: -5px;
-  top: 2.5rem;
-  height: 3rem;
-  width: 10px;
-  background-color: #e6e95d;
+  left: -12px;
+  top: 34px;
+  height: 36px;
+  width: 22px;
+  background-color: #d8df49;
   z-index: 1;
 `;
 
-const TableWrapper = styled.div`
-  border: 1px solid #d1d5db;
-  border-radius: 0.75rem;
-  overflow: hidden;
+const RedMarker = styled.div`
+  position: absolute;
+  left: -12px;
+  top: 34px;
+  height: 36px;
+  width: 22px;
+  background-color: #f4a261;
+  z-index: 1;
 `;
 
 const StyledTable = styled.table`
@@ -128,9 +132,10 @@ const StyledTable = styled.table`
 
 const TableHeader = styled.th`
   border: 1px solid;
-  padding: 0.75rem 1rem;
-  text-align: left;
+  padding: 24px 24px 24px 32px;
+  text-align: center;
   border: 1px solid;
+  font-size: 18px;
 `;
 
 const LeftTableHeader = styled(TableHeader)`
@@ -140,15 +145,38 @@ const LeftTableHeader = styled(TableHeader)`
 
 const TableCell = styled.td`
   border: 1px solid;
-  padding: 0.75rem 1rem;
+  padding: 16px 16px 16px 32px;
 `;
 
-const LeftTableCell = styled(TableCell)`
-  border: 1px solid;
+const ExtraText = styled.div`
+  margin-bottom: 16px;
+  color: #65676b;
 `;
 
-const LastRowCell = styled.td`
-  padding: 0.75rem 1rem;
+const ContactRight = styled.div`
+  width: 50%;
+  display: inline-block;
+  float: right;
+  font-style: italic;
+  margin-top: 20px;
+`;
+
+const contactMailIcon = styled.div`
+  color: white;
+  margin-right: 10px;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 8px;
+  background-color: #2a9d8f;
+`;
+
+const contactAddressIcon = styled.div`
+  color: white;
+  margin-right: 10px;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 8px;
+  background-color: #f4a261;
 `;
 
 const Home: NextPage = () => {
@@ -158,23 +186,16 @@ const Home: NextPage = () => {
     clientName: "Jan Kowalski",
     date: "02.04.2023",
     conversationDuration: "15 minut",
-    conversations: [
-      {
-        avatarMessage: "Dzień dobry! Jak mogę Ci dzisiaj pomóc?",
-        userMessage: "Potrzebuję informacji na temat nowego produktu.",
-        feedback: "Rozmowa była pomocna i profesjonalna. Dziękuję!",
-      },
-      {
-        avatarMessage: "Czy interesują Cię jakieś konkretne cechy produktu?",
-        userMessage: "Tak, chciałbym wiedzieć więcej o funkcjach i cenie.",
-        feedback: "Wyczerpująca odpowiedź.",
-      },
-      {
-        avatarMessage: "Czy mogę pomóc jeszcze w czymś innym?",
-        userMessage: "Nie, to wszystko. Dziękuję za pomoc!",
-        feedback: "Świetna obsługa.",
-      },
-    ],
+    userData: {
+      avatar: "Dzień dobry! Jak mogę Ci dzisiaj pomóc?",
+      user: "Potrzebuję informacji na temat nowego produktu.",
+      feedback: "Rozmowa była pomocna i profesjonalna. Dziękuję!",
+    },
+    positiveFeedback: "ON",
+    improvement: "ON",
+    strengths: "ON",
+    developmentArea: "ON",
+    recommendation: "ON",
   };
 
   const handleDownloadPDF = async () => {
@@ -185,24 +206,20 @@ const Home: NextPage = () => {
       console.log("Generating PDF...");
 
       // Generate table rows for all conversations
-      const tableRows = reportData.conversations
-        .map(
-          (conversation) => `
+      const tableRows = `
         <tr>
           <td class="table-cell">Avatar</td>
-          <td class="table-cell">${conversation.avatarMessage}</td>
+          <td class="table-cell">${reportData.userData.avatar}</td>
         </tr>
         <tr>
-          <td class="table-cell"> ${reportData.clientName.split(" ")[0]}</td>
-          <td class="table-cell">${conversation.userMessage}</td>
+          <td class="table-cell"> ${reportData.userData.user.split(" ")[0]}</td>
+          <td class="table-cell">${reportData.userData.user}</td>
         </tr>
         <tr>
           <td class="table-cell">Feedback</td>
-          <td class="table-cell">${conversation.feedback}</td>
+          <td class="table-cell">${reportData.userData.feedback}</td>
         </tr>
-      `
-        )
-        .join("");
+      `;
 
       // Create enhanced HTML with custom styles for PDF generation
       const enhancedHtml = `
@@ -220,6 +237,7 @@ const Home: NextPage = () => {
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 position: relative;
                 overflow: hidden;
+                color: #4b5563;
               }
               .header-container {
                 display: block;
@@ -248,7 +266,6 @@ const Home: NextPage = () => {
               }
               .info-line-container {
                 display: block;
-                
                 margin-bottom: 4px;
               }
               .info-underline {
@@ -265,26 +282,37 @@ const Home: NextPage = () => {
               }
               .table-container {
                 margin-top: 3rem;
+                border-radius: 36px;
+                border: 1px solid #65676b;
+                padding: 40px 40px 100px;
+                box-shadow: 8px 8px #2a9d8f;
+                margin-bottom: 80px;
                 position: relative;
-                border-radius: 0.75rem;
-                padding: 30px;
-                border-radius: 30px;
-                border: 1px solid #d1d5db;
-                z-index: 1;
                 background-color: white;
-                box-shadow: 4px 0 0px -1px rgba(43, 170, 144, 1);
               }
 
               .yellow-marker {
                 position: absolute;
-                left: -5px;
-                top: 2.5rem;
-                height: 3rem;
-                width: 10px;
-                background-color: #e6e95d;
+                left: -12px;
+                top: 34px;
+                height: 36px;
+                width: 22px;
+                background-color: #d8df49;
                 z-index: 1;
               }
-
+              .red-marker {
+                position: absolute;
+                left: -12px;
+                top: 34px;
+                height: 36px;
+                width: 22px;
+                background-color: #f4a261;
+                z-index: 1;
+              }
+              .extra-text {
+                margin-bottom: 16px;
+                color: #65676b;
+              }
               .styled-table {
                 width: 100%;
                 border-collapse: collapse;
@@ -293,9 +321,9 @@ const Home: NextPage = () => {
 
               .table-header {
                 border: 1px solid;
-                padding: 0.75rem 1rem;
-                text-align: left;
-                background-color: #f9fafb;
+                padding: 24px 24px 24px 32px;
+                text-align: center;
+                font-size: 18px;
               }
 
               .left-table-header {
@@ -305,67 +333,150 @@ const Home: NextPage = () => {
 
               .table-cell {
                 border: 1px solid;
-                padding: 0.75rem 1rem;
+                padding: 16px 16px 16px 32px;
               }
-          
+              .contact-info {
+                border-top: 2px solid #65676b;
+                margin-bottom: 1.25rem;
+                display: block;
+                padding-top: 24px;
+              }
+              .contact-left {
+                width: 50%;
+                display: inline-block;
+              }
+              .contact-right {
+                width: 50%;
+                display: inline-block;
+                float: right;
+                font-style: italic;
+                margin-top: 20px;
+              }
+              .contact-icon {
+                color: white;
+                border-radius: 50%;
+                padding: 5px;
+                font-size: 8px;
+              }
+              .icon-green {
+                background-color: #2a9d8f;
+              }
+              .icon-orange {
+                background-color: #f4a261;
+              }
             </style>
           </head>
           <body>
             <div class="report-container">
               <div class="header-container">
                 <div style="display: inline-block;">
-                  <div class="report-title">Raport</div>
-                  <div class="report-subtitle">nowAURA</div>
+              <div class="report-title">Raport</div>
+              <div class="report-subtitle">nowAURA</div>
                 </div>
                 <div class="client-info-section">
-                  <div class="info-item">
-                    <div class="info-content">
-                      <div class="info-line-container">
-                        <span class="info-label">Klient:</span>
-                        <span class="info-value">${reportData.clientName}</span>
-                      </div>
-                      <div class="info-underline"></div>
-                    </div>
+              <div class="info-item">
+                <div class="info-content">
+                  <div class="info-line-container">
+                <span class="info-label">Klient:</span>
+                <span class="info-value">${reportData.clientName}</span>
                   </div>
-                  <div class="info-item">
-                    <div class="info-content">
-                      <div class="info-line-container">
-                        <span class="info-label">Date:</span>
-                        <span class="info-value">${reportData.date}</span>
-                      </div>
-                      <div class="info-underline"></div>
-                    </div>
+                  <div class="info-underline"></div>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-content">
+                  <div class="info-line-container">
+                <span class="info-label">Date:</span>
+                <span class="info-value">${reportData.date}</span>
                   </div>
-                  <div class="info-item">
-                    <div class="info-content">
-                      <div class="info-line-container">
-                        <span class="info-label">Czas rozmowy:</span>
-                        <span class="info-value">${reportData.conversationDuration}</span>
-                      </div>
-                      <div class="info-underline"></div>
-                    </div>
+                  <div class="info-underline"></div>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-content">
+                  <div class="info-line-container">
+                <span class="info-label">Czas rozmowy:</span>
+                <span class="info-value">${reportData.conversationDuration}</span>
                   </div>
+                  <div class="info-underline"></div>
+                </div>
+              </div>
                 </div>
               </div>
               
               <div class="table-container">
                 <div class="yellow-marker"></div>
-                  <table class="styled-table">
-                    <thead>
-                      <tr>
-                        <th class="left-table-header">
-                          Osoba
-                        </th>
-                        <th class="table-header">
-                          Wypowiedź
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${tableRows}
-                    </tbody>
-                  </table>
-                
+              <table class="styled-table">
+                <thead>
+                  <tr>
+                <th class="left-table-header">
+                  Osoba
+                </th>
+                <th class="table-header">
+                  Wypowiedź
+                </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${tableRows}
+                </tbody>
+              </table>
+              </div>
+              <div class="table-container">
+                <div class="red-marker"></div>
+                <div class="extra-text">Assessment of soft skills (positive feedback):</div>
+                <div class="extra-text">${reportData.positiveFeedback}</div>
+              </div>
+              <div class="table-container" style="margin-top: 1000px">
+                <div class="red-marker"></div>
+                <div class="extra-text">Assessment of soft skills (elements for improvement):</div>
+                <div class="extra-text">${reportData.improvement}</div>
+              </div>
+              <div class="table-container">
+                <div class="red-marker"></div>
+                <div class="extra-text">Strengths:</div>
+                <div class="extra-text">${reportData.strengths}</div>
+              </div>
+              <div class="table-container">
+                <div class="red-marker"></div>
+                <div class="extra-text">Areas for development:</div>
+                <div class="extra-text">${reportData.developmentArea}</div>
+              </div>
+              <div class="table-container" style="margin-top: 1000px">
+                <div class="red-marker"></div>
+                <div class="extra-text">Summary and recommendations (which the interviewee should follow
+              in the future):</div>
+                <div class="extra-text">${reportData.recommendation}</div>
+              </div>
+              <div class="contact-info">
+                <div class="contact-left">
+                  <div style="font-weight: bold;">Contact information:</div>
+                  <div>Report generated by nowAURA. Have additional questions?</div>
+                  <div>Contact us.</div>
+                  <div style="margin-top: 10px;">
+                    <div style="display: inline-block;">
+                      <div style="display: inline-block; margin-right: 20px; vertical-align: top;">
+                        <div class="contact-icon icon-green" style="display: inline-block;">📧</div>
+                        <div style="display: inline-block; margin-left: 10px; color: #4b5563; font-weight: 500;">
+                          kontakt@nowaura.com
+                        </div>
+                      </div>
+                      <div style="vertical-align: top; margin-top: 5px;">
+                        <div class="contact-icon icon-orange" style="display: inline-block;">🌐</div>
+                        <div style="display: inline-block; margin-left: 10px; color: #4b5563; font-weight: 500;">
+                          www.nowaura.com
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display: inline-block;  margin-right: 20px; vertical-align: top;">
+                      <img src="http://34.16.90.177:3000/images/logo_1.png" alt="Logo" width="60" height="60" />
+                    </div>
+                  </div>
+                </div>
+                <div class="contact-right">
+                  This AI chat conversation report and transcript was generated
+                  entirely by AI.
+                </div>
               </div>
             </div>
           </body>
@@ -499,29 +610,143 @@ const Home: NextPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {reportData.conversations.map((conversation, index) => (
-                  <React.Fragment key={index}>
-                    <tr>
-                      <LeftTableCell>Avatar</LeftTableCell>
-                      <TableCell>{conversation.avatarMessage}</TableCell>
-                    </tr>
-                    <tr>
-                      <LeftTableCell>
-                        {reportData.clientName.split(" ")[0]}
-                      </LeftTableCell>
-                      <TableCell>{conversation.userMessage}</TableCell>
-                    </tr>
-                    <tr>
-                      <LeftTableCell>Feedback</LeftTableCell>
-                      <TableCell>
-                        {conversation.feedback || "Brak oceny"}
-                      </TableCell>
-                    </tr>
-                  </React.Fragment>
-                ))}
+                <tr>
+                  <TableCell>Avatar</TableCell>
+                  <TableCell>{reportData.userData.avatar}</TableCell>
+                </tr>
+                <tr>
+                  <TableCell>{reportData.clientName.split(" ")[0]}</TableCell>
+                  <TableCell>{reportData.userData.user}</TableCell>
+                </tr>
+                <tr>
+                  <TableCell>Feedback</TableCell>
+                  <TableCell>{reportData.userData.feedback}</TableCell>
+                </tr>
               </tbody>
             </StyledTable>
           </TableContainer>
+          <TableContainer>
+            <RedMarker />
+            <ExtraText>
+              Assessment of soft skills (positive feedback):
+            </ExtraText>
+            <ExtraText>{reportData.positiveFeedback}</ExtraText>
+          </TableContainer>
+          <TableContainer>
+            <RedMarker />
+            <ExtraText>
+              Assessment of soft skills (elements for improvement):
+            </ExtraText>
+            <ExtraText>{reportData.improvement}</ExtraText>
+          </TableContainer>
+          <TableContainer>
+            <RedMarker />
+            <ExtraText>Strengths:</ExtraText>
+            <ExtraText>{reportData.strengths}</ExtraText>
+          </TableContainer>
+          <TableContainer>
+            <RedMarker />
+            <ExtraText>Areas for development:</ExtraText>
+            <ExtraText>{reportData.developmentArea}</ExtraText>
+          </TableContainer>
+          <TableContainer>
+            <RedMarker />
+            <ExtraText>
+              Summary and recommendations (which the interviewee should follow
+              in the future):
+            </ExtraText>
+            <ExtraText>{reportData.recommendation}</ExtraText>
+          </TableContainer>
+          <div
+            style={{
+              borderTop: "2px solid #65676b",
+              marginBottom: "1.25rem",
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: "24px",
+            }}
+          >
+            <div style={{ width: "50%" }}>
+              <div style={{ fontWeight: "bold" }}>Contact information:</div>
+              <div>Report generated by nowAURA. Have additional questions?</div>
+              <div>Contact us.</div>
+              <div style={{ marginTop: "10px" }}></div>
+              <div style={{ display: "inline-block" }}>
+                <div
+                  style={{
+                    display: "inline-block",
+                    marginRight: "20px",
+                    verticalAlign: "top",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "inline-block",
+                      backgroundColor: "#2a9d8f;",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "5px",
+                      fontSize: "8px",
+                    }}
+                  >
+                    📧
+                  </div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      marginLeft: "10px",
+                      color: "#4b5563",
+                      fontWeight: 500,
+                    }}
+                  >
+                    kontakt@nowaura.com
+                  </div>
+                </div>
+                <div style={{ verticalAlign: "top", marginTop: "5px" }}>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      color: "white",
+                      borderRadius: "50%",
+                      padding: "5px",
+                      fontSize: "8px",
+                      backgroundColor: " #f4a261;",
+                    }}
+                  >
+                    🌐
+                  </div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      marginLeft: "10px",
+                      color: "#4b5563",
+                      fontWeight: 500,
+                    }}
+                  >
+                    www.nowaura.com
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "inline-block",
+                  marginRight: "20px",
+                  verticalAlign: "top",
+                }}
+              >
+                <img
+                  src="http://34.16.90.177:3000/images/logo_1.png"
+                  alt="Logo"
+                  width="60"
+                  height="60"
+                />
+              </div>
+            </div>
+            <ContactRight>
+              This AI chat conversation report and transcript was generated
+              entirely by AI.
+            </ContactRight>
+          </div>
         </ReportCard>
       </ContentWrapper>
     </PageContainer>
